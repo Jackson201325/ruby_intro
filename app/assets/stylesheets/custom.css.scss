@@ -32,9 +32,14 @@ $navbar-default-bg:#212121;
 }
 
 
-.btn.xl {
+.btn-xl {
   font-size: 1.7em;
   background-color: black;
+}
+
+.article-meta-details {
+  border-top: 1px solid #eaeaea;
+  margin-top: 15px
 }
 
 .article-actions {
