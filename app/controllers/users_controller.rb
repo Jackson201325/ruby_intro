@@ -2,14 +2,15 @@ class UsersController < ApplicationController
 
   before_action :set_user, only: [:edit, :update, :destroy, :show]
 
+  
+  def index
+    @users = User.paginate(page: params[:page], per_page: 5)
+  end
+  
   def new
     @user = User.new
   end
-
-  def index
-    @users = User.all
-  end
-
+  
   def create
     @user = User.new(user_params)
     if @user.save
@@ -32,14 +33,8 @@ class UsersController < ApplicationController
     end
   end
 
-  
-
-  def show 
-
-  end
-
   def show
-    @user = User.find(params[:id])
+    @user_articles = @user.articles.paginate(page: params[:page], per_page:5)
   end
 
   def destroy
