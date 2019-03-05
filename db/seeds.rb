@@ -10,9 +10,7 @@ require 'faker'
 include Faker
 
 1000.times do
-  Article.create(
-    title: Faker::Book.title,
-    description: Faker::ChuckNorris.fact,
-    user_id: Faker::Number.between(1, 100),
+  Category.create(
+    name: Faker::Cannabis.strain,
   )
 end

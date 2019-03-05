@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
 
   before_action :set_user, only: [:edit, :update, :destroy, :show]
-  before_action :require_same_user, only: [:edit, :update]
+  before_action :require_same_user, only: [:edit, :update, :destroy]
+  before_action :require_admin, only: [:destroy]
 
   
   def index
@@ -15,8 +16,9 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      flash[:success] = "Welcome to Alpha-Blog"
-      redirect_to articles_path
+      session[:user_id] =@user.id
+      flash[:success] = "Welcome to Alpha-Blog #{@user.username} "
+      redirect_to user_path(@user.id)
     else
       render 'new'
     end
@@ -39,9 +41,12 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    @user.destroy
+    flash[:success] = "User and article created by user was succesfully deleted"
+    redirect_to users_path
   end
 
-
+ 
   private
   def user_params
     params.require(:user).permit(:username, :email, :password)
@@ -53,9 +58,19 @@ class UsersController < ApplicationController
 
   def require_same_user
     # debugger
-    if !logged_in? || current_user != @user
+    if (current_user != @user) and !current_user.admin?
       flash[:danger] ="You can only edit your own account"
       redirect_to root_path
     end
   end
+
+  def require_admin
+
+    if logged_in? and !current_user.admin?
+      flash[:danger] = "Only Admin users can perform that action"
+      redirect_to root_path
+    end
+
+  end 
+
 end
