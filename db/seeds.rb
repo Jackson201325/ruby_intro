@@ -9,7 +9,7 @@
 require 'faker'
 include Faker
 
-1000.times do
+10.times do
   Category.create(
     name: Faker::Cannabis.strain,
   )
